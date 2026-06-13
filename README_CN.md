@@ -85,6 +85,23 @@ cp -r . ~/.claude/skills/know-each-other/
 
 Skill 会自动出现在可用列表中。
 
+### 会话启动时自动加载档案
+
+初始化完成后，skill 会自动在 `~/.claude/settings.json` 中配置 **SessionStart hook**，让 `SOUL.md` 和 `USER_PROFILE.md` 的**完整内容**在每次会话启动时直接注入上下文——不是文件引用，是真实内容。
+
+```json
+"hooks": {
+  "SessionStart": [{
+    "hooks": [{
+      "type": "command",
+      "command": "... ; [ -f ~/.claude/SOUL.md ] && cat ~/.claude/SOUL.md; [ -f ~/.claude/USER_PROFILE.md ] && cat ~/.claude/USER_PROFILE.md; true"
+    }]
+  }]
+}
+```
+
+从下一次会话的第一条消息起，Claude 就已经是你配置好的那个协作伙伴。
+
 ---
 
 ## 心理学框架

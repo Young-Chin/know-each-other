@@ -2,6 +2,8 @@
 
 > A Claude skill that helps AI truly understand *who you are* — not just what you want.
 
+[中文版 README →](README_CN.md)
+
 Most AI assistants start from zero every session. **Know Each Other** builds a persistent psychological portrait of you, so Claude can adapt to your thinking style, communication preferences, and decision-making patterns across all your projects.
 
 ---
@@ -84,6 +86,23 @@ cp -r . ~/.claude/skills/know-each-other/
 ```
 
 The skill appears in your available skills list automatically.
+
+### Auto-loading profiles on session start
+
+After initialization, the skill automatically configures a **SessionStart hook** in `~/.claude/settings.json` so that `SOUL.md` and `USER_PROFILE.md` are injected directly into context at the beginning of every session — not as file references, but as full content.
+
+```json
+"hooks": {
+  "SessionStart": [{
+    "hooks": [{
+      "type": "command",
+      "command": "... ; [ -f ~/.claude/SOUL.md ] && cat ~/.claude/SOUL.md; [ -f ~/.claude/USER_PROFILE.md ] && cat ~/.claude/USER_PROFILE.md; true"
+    }]
+  }]
+}
+```
+
+Claude behaves as your configured partner from the very first message of every session.
 
 ---
 

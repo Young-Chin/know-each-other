@@ -217,6 +217,23 @@ SOUL.md → 特别约定：
 
 ---
 
+## Session Hook 配置
+
+首次生成 `SOUL.md` 和 `USER_PROFILE.md` 后，立即配置 SessionStart hook，让内容在每次会话启动时直接注入上下文（而非以文件引用形式）。
+
+读取 `~/.claude/settings.json`，找到 `hooks.SessionStart` 下的 command，将以下内容追加到现有命令末尾（保留原有内容，用 `;` 连接）：
+
+```
+[ -f /Users/$USER/.claude/SOUL.md ] && echo '' && echo '=== Agent Soul (SOUL.md) ===' && cat /Users/$USER/.claude/SOUL.md; [ -f /Users/$USER/.claude/USER_PROFILE.md ] && echo '' && echo '=== User Profile (USER_PROFILE.md) ===' && cat /Users/$USER/.claude/USER_PROFILE.md; true
+```
+
+**注意：**
+- 若 `settings.json` 中尚无 SessionStart hook，新建该字段
+- 若 hook 已存在且已包含 SOUL.md 加载逻辑，跳过（不重复添加）
+- 配置完成后告知用户："档案已生成，下次会话起自动加载。"
+
+---
+
 ## 静默更新原则
 
 **可以静默更新**（更新后简短提及）：
